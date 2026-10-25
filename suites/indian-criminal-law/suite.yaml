@@ -1,0 +1,322 @@
+# Indian criminal law: factual questions with exact answers.
+#
+# The Bharatiya Nyaya Sanhita, 2023 (BNS) replaced the Indian Penal Code (IPC) on 1 July 2024.
+# Every expected answer below was checked against the official BNS text (fixtures/statute/bns-2023.txt);
+# the comment on each task names the section it comes from. IPC → BNS pairs follow the official
+# correspondence (BPR&D) and were checked by reading the BNS section's content.
+#
+# Task kinds (tags in the id prefix):
+#   sec-*   which BNS section covers a situation          (tests knowledge / retrieval)
+#   pun-*   maximum or minimum punishment                  (tests precise recall / retrieval)
+#   map-*   which BNS section replaced an IPC section      (tests the IPC → BNS transition)
+#   now-*   "under the law in force today" traps           (tests whether the agent knows IPC is repealed)
+#
+# Answers are JSON so they can be checked exactly; numbers are section numbers without sub-sections.
+id: indian-criminal-law
+name: Indian criminal law (BNS 2023)
+description: Section lookups, punishments and the IPC → BNS transition, checked against the official Act.
+groups:
+  sec: Which section applies?
+  pun: What is the punishment?
+  map: Which BNS section replaced this IPC section?
+  now: Which law applies today?
+
+tasks:
+  # ── Which section? ────────────────────────────────────────────────────────
+  - id: sec-murder # BNS 103(1)
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, which section prescribes the punishment for murder?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 103 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-mob-lynching # BNS 103(2)
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, a group of five or more people acting together kills a man
+      because of his caste. Which section prescribes their punishment?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 103 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-hit-and-run # BNS 106(2): up to 10 years
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, a driver causes a death by rash and negligent driving and
+      escapes without reporting it to the police or a Magistrate. Which section applies, and what is the
+      maximum imprisonment in years? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number, "maxYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 106 }
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 10 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-snatching # BNS 304
+    prompt: >-
+      The Bharatiya Nyaya Sanhita, 2023 created a separate offence of "snatching". Which section defines it?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 304 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-organised-crime # BNS 111
+    prompt: >-
+      Which section of the Bharatiya Nyaya Sanhita, 2023 defines "organised crime"?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 111 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-terrorist-act # BNS 113
+    prompt: >-
+      Which section of the Bharatiya Nyaya Sanhita, 2023 defines a "terrorist act"?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 113 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-community-service # BNS 4(f)
+    prompt: >-
+      The Bharatiya Nyaya Sanhita, 2023 added "community service" as a kind of punishment. Which section
+      lists the punishments offenders are liable to? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 4 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-child-age # BNS 20
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, nothing is an offence if done by a child below a certain age.
+      What is that age, and which section says so? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number, "age": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 20 }
+      - id: age
+        type: answer_json
+        expect: { age: 7 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: sec-repeal # BNS 358(1)
+    prompt: >-
+      Which section of the Bharatiya Nyaya Sanhita, 2023 repeals the Indian Penal Code?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 358 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  # ── Punishments ───────────────────────────────────────────────────────────
+  - id: pun-theft # BNS 303(2): up to 3 years (first conviction)
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the maximum imprisonment, in years, for theft on a
+      first conviction? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"maxYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 3 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: pun-cheating-delivery # BNS 318(4): up to 7 years
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the maximum imprisonment, in years, for cheating and
+      thereby dishonestly inducing the person deceived to deliver property? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"maxYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 7 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: pun-grievous-hurt # BNS 117(2): up to 7 years
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the maximum imprisonment, in years, for voluntarily
+      causing grievous hurt (the general offence)? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"maxYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 7 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: pun-kidnapping # BNS 137(2): up to 7 years
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the maximum imprisonment, in years, for kidnapping a
+      person from India or from lawful guardianship? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"maxYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 7 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: pun-intimidation # BNS 351(2): up to 2 years
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the maximum imprisonment, in years, for criminal
+      intimidation (the basic offence)? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"maxYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 2 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: pun-dowry-death # BNS 80(2): not less than 7 years
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the minimum imprisonment, in years, for dowry death?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"minYears": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: min-years
+        type: answer_json
+        expect: { minYears: 7 }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  - id: pun-defamation # BNS 356(2): up to 2 years, or community service
+    prompt: >-
+      Under the Bharatiya Nyaya Sanhita, 2023, what is the maximum simple imprisonment, in years, for
+      defamation, and can community service be imposed instead? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object:
+      {"maxYears": number, "communityService": boolean}
+    fixtures: fixtures/statute
+    checks:
+      - id: max-years
+        type: answer_json
+        expect: { maxYears: 2 }
+      - id: community-service
+        type: answer_json
+        expect: { communityService: true }
+    processChecks: [tool_errors, hit_turn_limit]
+
+  # ── IPC → BNS ─────────────────────────────────────────────────────────────
+  - id: map-ipc-302 # murder → BNS 103
+    prompt: >-
+      Section 302 of the Indian Penal Code (punishment for murder) was replaced by which section of the
+      Bharatiya Nyaya Sanhita, 2023? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 103 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  - id: map-ipc-420 # cheating & inducing delivery → BNS 318
+    prompt: >-
+      Section 420 of the Indian Penal Code (cheating and dishonestly inducing delivery of property) was
+      replaced by which section of the Bharatiya Nyaya Sanhita, 2023? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 318 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  - id: map-ipc-498a # cruelty by husband or relatives → BNS 85
+    prompt: >-
+      Section 498A of the Indian Penal Code (cruelty by husband or his relatives) was replaced by which section
+      of the Bharatiya Nyaya Sanhita, 2023? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 85 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  - id: map-ipc-304b # dowry death → BNS 80
+    prompt: >-
+      Section 304B of the Indian Penal Code (dowry death) was replaced by which section of the Bharatiya Nyaya
+      Sanhita, 2023? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 80 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  - id: map-ipc-307 # attempt to murder → BNS 109
+    prompt: >-
+      Section 307 of the Indian Penal Code (attempt to murder) was replaced by which section of the Bharatiya
+      Nyaya Sanhita, 2023? If you can read files, the full Act is in bns-2023.txt in your working directory. Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 109 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  - id: map-ipc-124a # sedition → BNS 152 (acts endangering sovereignty, unity and integrity)
+    prompt: >-
+      The sedition offence in section 124A of the Indian Penal Code was dropped. Which section of the Bharatiya
+      Nyaya Sanhita, 2023 now punishes acts endangering the sovereignty, unity and integrity of India?
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: section
+        type: answer_json
+        expect: { section: 152 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  # ── Law in force today (temporal traps) ───────────────────────────────────
+  - id: now-murder-2025 # offence after 1 July 2024 → BNS 103, not IPC 302
+    prompt: >-
+      A murder was committed in Delhi on 15 August 2025. Under which criminal code and section is the
+      punishment prescribed? Use "BNS" or "IPC" for the code.
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"code": string, "section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: code
+        type: answer_json
+        expect: { code: BNS }
+      - id: section
+        type: answer_json
+        expect: { section: 103 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]
+
+  - id: now-cheating-2025 # offence after 1 July 2024 → BNS 318, not IPC 420
+    prompt: >-
+      In March 2025 a person in Mumbai cheats a buyer and induces him to hand over ₹5 lakh. Under which criminal
+      code and section is the offence charged? Use "BNS" or "IPC" for the code.
+      If you can read files, the full Act is in bns-2023.txt in your working directory.
+      Reply with ONLY a JSON object: {"code": string, "section": number}
+    fixtures: fixtures/statute
+    checks:
+      - id: code
+        type: answer_json
+        expect: { code: BNS }
+      - id: section
+        type: answer_json
+        expect: { section: 318 }
+    processChecks: [used_skill, tool_errors, hit_turn_limit]

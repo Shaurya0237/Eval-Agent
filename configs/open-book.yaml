@@ -1,0 +1,8 @@
+# Baseline + file and terminal tools: the agent can search bns-2023.txt.
+id: open-book
+description: Open book. Same model; can read and search the BNS text.
+model: gpt-4.1-mini
+toolsets: [skills, file, terminal]
+skills: []
+maxTurns: 12
+price: { inputPerMTok: 0.40, outputPerMTok: 1.60 }

@@ -1,0 +1,24 @@
+{
+  "name": "agent-eval-lab",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Run a task suite against several Hermes Agent configurations and tell which one is better, and how sure we are.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "build": "pnpm --filter @eval-lab/shared build && pnpm --filter @eval-lab/web build && pnpm --filter @eval-lab/api build",
+    "dev:api": "pnpm --filter @eval-lab/shared build && pnpm --filter @eval-lab/api dev",
+    "dev:web": "pnpm --filter @eval-lab/web dev",
+    "test": "pnpm --filter @eval-lab/shared build && pnpm -r --filter=!@eval-lab/shared test",
+    "typecheck": "pnpm --filter @eval-lab/shared build && pnpm -r typecheck",
+    "eval:ci": "pnpm --filter @eval-lab/shared build && pnpm --filter @eval-lab/api build && node --disable-warning=ExperimentalWarning apps/api/dist/cli.js",
+    "demo": "pnpm --filter @eval-lab/shared build && pnpm --filter @eval-lab/api build && node --disable-warning=ExperimentalWarning apps/api/dist/cli.js --demo",
+    "format": "prettier --write \"apps/**/*.{ts,vue,css,mjs}\" \"packages/**/*.ts\" \"scripts/*.mjs\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,vue,css,mjs}\" \"packages/**/*.ts\" \"scripts/*.mjs\""
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
+  }
+}

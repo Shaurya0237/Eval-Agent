@@ -1,0 +1,8 @@
+# Baseline + the ipc-bns-mapping skill (still closed book).
+id: mapping-skill
+description: Closed book plus the IPC → BNS mapping skill.
+model: gpt-4.1-mini
+toolsets: [skills]
+skills: [ipc-bns-mapping]
+maxTurns: 12
+price: { inputPerMTok: 0.40, outputPerMTok: 1.60 }

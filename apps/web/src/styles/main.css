@@ -1,0 +1,286 @@
+/*
+ * Design tokens (light + dark) and base styles.
+ * Text/background pairs are WCAG AA (≥ 4.5:1); status colours always ship with an icon or label.
+ * Theme = `dark` class on <html> (composables/useTheme.ts).
+ */
+@import '@fontsource/fira-sans/400.css';
+@import '@fontsource/fira-sans/500.css';
+@import '@fontsource/fira-sans/600.css';
+@import '@fontsource/fira-sans/700.css';
+@import '@fontsource/fira-code/400.css';
+@import '@fontsource/fira-code/500.css';
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Fira Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-ink-950: var(--ink-950);
+  --color-ink-900: var(--ink-900);
+  --color-ink-850: var(--ink-850);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-ink-500: var(--ink-500);
+  --color-ink-400: var(--ink-400);
+  --color-ink-300: var(--ink-300);
+  --color-ink-200: var(--ink-200);
+  --color-ink-100: var(--ink-100);
+
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --color-warn: var(--warn);
+  --color-sim: var(--sim);
+
+  --animate-pop: pop 260ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  --animate-fade-in: fade-in 220ms ease-out both;
+  --animate-grow-x: grow-x 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+}
+
+/* Light (default). ink-950 = page, ink-900 = surface, ink-100 = strongest text. */
+:root {
+  --ink-950: #f6f8fb;
+  --ink-900: #ffffff;
+  --ink-850: #f8fafc;
+  --ink-800: #f1f5f9;
+  --ink-700: #e2e8f0;
+  --ink-600: #cbd5e1;
+  --ink-500: #5a6578; /* ≥ 4.5:1 on page and surface: smallest allowed text tone */
+  --ink-400: #475569;
+  --ink-300: #334155;
+  --ink-200: #1e293b;
+  --ink-100: #0f172a;
+  --accent: #1d4ed8;
+  --on-accent: #ffffff;
+  --accent-soft: #eff4ff;
+  --good: #166534;
+  --bad: #b91c1c;
+  --warn: #92400e;
+  --sim: #6d28d9;
+  --flow-dot: #2563eb;
+  --flow-halo: rgb(37 99 235 / 0.16);
+  --flow-glow: rgb(37 99 235 / 0.3);
+  --flow-line: #dbe2ec;
+  color-scheme: light;
+}
+
+.dark {
+  --ink-950: #0b1120;
+  --ink-900: #111827;
+  --ink-850: #151e2e;
+  --ink-800: #1b2537;
+  --ink-700: #263246;
+  --ink-600: #36445c;
+  --ink-500: #8391a7;
+  --ink-400: #94a3b8;
+  --ink-300: #cbd5e1;
+  --ink-200: #e2e8f0;
+  --ink-100: #f1f5f9;
+  --accent: #60a5fa;
+  --on-accent: #0b1220;
+  --accent-soft: #172554;
+  --good: #4ade80;
+  --bad: #f87171;
+  --warn: #fbbf24;
+  --sim: #c4b5fd;
+  --flow-dot: #60a5fa;
+  --flow-halo: rgb(96 165 250 / 0.15);
+  --flow-glow: rgb(96 165 250 / 0.55);
+  --flow-line: #2a364b;
+  color-scheme: dark;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes grow-x {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 250% 0;
+  }
+}
+@keyframes travel {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% + 32px);
+    opacity: 0;
+  }
+}
+@keyframes live-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--good) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+}
+
+html {
+  font-size: 100%; /* respect the user's browser font size */
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  @apply bg-ink-950 font-sans text-[0.9375rem] leading-relaxed text-ink-100 antialiased;
+  font-feature-settings: 'kern', 'liga';
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+/* Numbers line up in tables. */
+.font-mono,
+code,
+pre,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+/* Long tokens (JSON, paths) wrap instead of widening the page; grid columns may shrink. */
+pre,
+code {
+  overflow-wrap: anywhere;
+}
+.grid > * {
+  min-width: 0;
+}
+h1,
+h2,
+h3 {
+  @apply text-ink-100;
+  text-wrap: balance;
+}
+
+/* Visible keyboard focus everywhere (WCAG 2.4.7). */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@utility card {
+  @apply rounded-xl border border-ink-700 bg-ink-900 shadow-[0_1px_2px_rgb(15_23_42/0.04)];
+}
+@utility label-xs {
+  @apply text-xs font-medium tracking-wide text-ink-500 uppercase;
+}
+@utility btn {
+  @apply inline-flex min-h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-ink-600 bg-ink-900 px-3.5 py-1.5 text-sm font-medium text-ink-200 transition-colors hover:border-ink-500 hover:bg-ink-800 hover:text-ink-100 disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply inline-flex min-h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility field {
+  @apply min-h-10 w-full rounded-lg border border-ink-600 bg-ink-900 px-3 py-2 text-sm text-ink-100 outline-none placeholder:text-ink-500 focus:border-accent focus:ring-2 focus:ring-accent/25;
+}
+@utility running-shimmer {
+  background-image: linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--accent) 28%, transparent) 50%, transparent 100%);
+  background-size: 200% 100%;
+  @apply animate-shimmer;
+}
+@utility th {
+  @apply px-4 py-2.5 text-left text-xs font-medium tracking-wide whitespace-nowrap text-ink-500 uppercase;
+}
+@utility td {
+  @apply px-4 py-3 align-middle;
+}
+
+/* Skip link: hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--good);
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+/* Pipeline comet: a dot with a fading tail travelling along a connector. */
+.flow-line {
+  background: var(--flow-line);
+}
+.flow-comet {
+  position: absolute;
+  top: -1px;
+  height: 3px;
+  width: 32px;
+  margin-left: -32px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, var(--flow-dot));
+}
+.flow-comet::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--flow-dot);
+  box-shadow:
+    0 0 0 3px var(--flow-halo),
+    0 0 12px 2px var(--flow-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

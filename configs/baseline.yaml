@@ -1,0 +1,9 @@
+# Closed book: answers from the model's own knowledge.
+# No file tools, so the agent cannot open the statute even though it is in the workspace.
+id: baseline
+description: Closed book. gpt-4.1-mini, no file tools, no skills.
+model: gpt-4.1-mini
+toolsets: [skills]
+skills: []
+maxTurns: 12
+price: { inputPerMTok: 0.40, outputPerMTok: 1.60 }

@@ -1,0 +1,30 @@
+{
+  "name": "@eval-lab/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NestJS backend: runs the evaluation pipeline and serves results (and the built web UI).",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json && node --disable-warning=ExperimentalWarning dist/main.js",
+    "start": "node --disable-warning=ExperimentalWarning dist/main.js",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@eval-lab/shared": "workspace:*",
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/platform-fastify": "^11.1.0",
+    "fastify": "^5.11.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.0",
+    "yaml": "^2.8.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "~5.9.0",
+    "vitest": "^3.2.0"
+  }
+}
